@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact | Monikha K</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/skills.html">Skills</a></li>
+      <li><a href="/certifications.html">Certifications</a></li>
+      <li><a href="/projects.html">Projects</a></li>
+      <li><a href="/resume.html">Resume</a></li>
+      <li><a href="/contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <h1>Contact Me</h1>
+
+    <form id="contactForm">
+      <input type="text" name="name" id="name" placeholder="Your Name" required />
+      <input type="email" name="email" id="email" placeholder="Your Email" required />
+      <input type="tel" name="phone" id="phone" placeholder="Your Phone (Optional)" />
+      <textarea name="message" id="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+
+    <p id="statusMsg" class="status-message"></p>
+
+  <section class="contact-icons">
+  <h2>Connect with Me</h2>
+  <div class="icon-links">
+        <a href="tel:+919994175002" title="Phone">
+      <img src="https://marketplace.canva.com/upyr4/MAFN-yupyr4/1/tl/canva-phone-icon-MAFN-yupyr4.png" alt="Phone" />
+    </a>
+    <a href="mailto:monikha.k2024cse@sece.ac.in" title="Email">
+      <img src="https://static.vecteezy.com/system/resources/previews/006/697/974/non_2x/mail-email-icon-template-black-color-editable-mail-email-icon-symbol-flat-illustration-for-graphic-and-web-design-free-vector.jpg " alt="Email" />
+    </a>
+    <a href="https://github.com/Monikha-K" target="_blank" title="GitHub">
+      <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" />
+    </a>
+    <a href="https://linkedin.com/in/monikha-k-764b9b32b" target="_blank" title="LinkedIn">
+      <img src="https://static.vecteezy.com/system/resources/previews/018/930/480/non_2x/linkedin-logo-linkedin-icon-transparent-free-png.png" alt="LinkedIn" />
+    </a>
+  </div>
+</section>
+
+
+  </section>
+
+
+  <script>
+    // Direct contact form handler
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Contact page loaded');
+
+      const contactForm = document.getElementById('contactForm');
+      const statusMsg = document.getElementById('statusMsg');
+
+      if (!contactForm || !statusMsg) {
+        console.error('Form elements not found');
+        return;
+      }
+
+      console.log('Form elements found, adding event listener');
+
+      contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log('Form submitted');
+
+        // Get form data
+        const formData = {
+          name: document.getElementById('name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          message: document.getElementById('message').value.trim()
+        };
+
+        console.log('Form data:', formData);
+
+        // Validate
+        if (!formData.name || !formData.email || !formData.message) {
+          statusMsg.textContent = 'Please fill in all required fields.';
+          statusMsg.style.color = 'red';
+          statusMsg.style.display = 'block';
+          return;
+        }
+
+        // Show loading
+        statusMsg.textContent = 'Sending message...';
+        statusMsg.style.color = '#666';
+        statusMsg.style.display = 'block';
+
+        try {
+          console.log('Sending request...');
+
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+
+          console.log('Response received:', response.status);
+
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+
+          const result = await response.json();
+          console.log('Success:', result);
+
+          statusMsg.textContent = 'Message sent successfully!';
+          statusMsg.style.color = 'green';
+          statusMsg.style.display = 'block';
+
+          contactForm.reset();
+
+        } catch (error) {
+          console.error('Error:', error);
+          statusMsg.textContent = 'Failed to send message. Please try again.';
+          statusMsg.style.color = 'red';
+          statusMsg.style.display = 'block';
+        }
+      });
+    });
+  </script>
+
+<footer style="background-color: #222; color: #fff; text-align: center; padding: 15px 0;">
+  © 2025 Monikha K. All Rights Reserved.
+</footer>
+
+</body>
+</html>

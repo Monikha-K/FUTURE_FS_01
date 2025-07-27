@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects | Monikha K</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/skills.html">Skills</a></li>
+      <li><a href="/certifications.html">Certifications</a></li>
+      <li><a href="/projects.html" class="active">Projects</a></li>
+      <li><a href="/resume.html">Resume</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Projects Section -->
+  <section class="projects-section">
+    <div class="container">
+      <h1>My Projects</h1>
+      <p class="projects-intro">Here are some of the projects I've worked on:</p>
+
+      <div class="projects-filter">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+        <button class="filter-btn" data-filter="in-progress">In Progress</button>
+        <button class="filter-btn" data-filter="featured">Featured</button>
+      </div>
+
+      <div id="projectsContainer">
+        <div class="loading">Loading projects...</div>
+      </div>
+
+      <!-- Static fallback projects -->
+      <div id="staticProjects" style="display: none;">
+        <div class="projects-grid">
+          <div class="project-card" data-status="completed">
+            <div class="project-image">
+              <img src="https://cdn.corporatefinanceinstitute.com/assets/finance-definition.jpg" alt="Personal Finance Tracker" onerror="this.style.display='none'">
+            </div>
+            <div class="project-content">
+              <h3>💰 Personal Finance Tracker</h3>
+              <p>A comprehensive Python-based application for tracking salary, budget, and expenses with interactive bar charts and smart alerts to help users manage their finances effectively.</p>
+              <div class="project-tech">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Matplotlib</span>
+                <span class="tech-tag">Pandas</span>
+              </div>
+
+              <div class="project-status">
+                <span class="status-badge completed">Completed</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card" data-status="completed">
+            <div class="project-image">
+              <img src="https://maduraitourism.co.in/images/places-to-visit/headers/madurai-darshan-packages-header-madurai-tourism.jpg.jpg" alt="Travel Blog" onerror="this.style.display='none'">
+            </div>
+            <div class="project-content">
+              <h3>🌍 Travel Blog – Madurai City</h3>
+              <p>An engaging blog-style website that beautifully showcases the rich attractions, cultural heritage, and hidden gems of Madurai city with responsive design and interactive features.</p>
+              <div class="project-tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript</span>
+              </div>
+
+              <div class="project-status">
+                <span class="status-badge completed">Completed</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card" data-status="completed">
+            <div class="project-image">
+              <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Library Management System" onerror="this.style.display='none'">
+            </div>
+            <div class="project-content">
+              <h3>📚 Library Management System</h3>
+              <p>A robust command-line based library management system built in C, featuring book cataloging, member management, and efficient search and borrowing functionalities.</p>
+              <div class="project-tech">
+                <span class="tech-tag">C Programming</span>
+                <span class="tech-tag">File Handling</span>
+                <span class="tech-tag">Data Structures</span>
+              </div>
+
+              <div class="project-status">
+                <span class="status-badge completed">Completed</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card" data-status="in-progress">
+            <div class="project-image">
+              <img src="https://static.resumegiants.com/wp-content/uploads/sites/25/2022/06/09105622/Professional-portfolio-1040x694.webp" alt="Portfolio Website" onerror="this.style.display='none'">
+            </div>
+            <div class="project-content">
+              <h3>🌐 Portfolio Website</h3>
+              <p>A modern, responsive portfolio website with MongoDB integration, dynamic content management, and visitor analytics. Features include contact forms, project showcases, and admin panel.</p>
+              <div class="project-tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">MongoDB</span>
+              </div>
+
+              <div class="project-status">
+                <span class="status-badge in-progress">In Progress</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Load projects dynamically
+    async function loadAndDisplayProjects() {
+      try {
+        const projects = await loadProjects();
+        const container = document.getElementById('projectsContainer');
+
+        if (projects.length > 0) {
+          displayProjects(projects, container);
+          setupProjectFilters(projects);
+        } else {
+          // Show static projects if no data from database
+          document.getElementById('staticProjects').style.display = 'block';
+          container.style.display = 'none';
+          setupStaticProjectFilters();
+        }
+      } catch (error) {
+        console.error('Error loading projects:', error);
+        // Show static projects on error
+        document.getElementById('staticProjects').style.display = 'block';
+        document.getElementById('projectsContainer').style.display = 'none';
+        setupStaticProjectFilters();
+      }
+    }
+
+    function displayProjects(projects, container) {
+      let html = '<div class="projects-grid">';
+
+      projects.forEach(project => {
+        const techTags = project.technologies.map(tech =>
+          `<span class="tech-tag">${tech}</span>`
+        ).join('');
+
+        html += `
+          <div class="project-card" data-status="${project.status}" data-featured="${project.featured}">
+            <div class="project-image">
+              <img src="${project.imageUrl || '/images/default-project.png'}" alt="${project.title}">
+            </div>
+            <div class="project-content">
+              <h3>${project.title}</h3>
+              <p>${project.description}</p>
+              <div class="project-tech">
+                ${techTags}
+              </div>
+              <div class="project-status">
+                <span class="status-badge ${project.status}">${project.status.charAt(0).toUpperCase() + project.status.slice(1).replace('-', ' ')}</span>
+                ${project.featured ? '<span class="featured-badge">Featured</span>' : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function setupProjectFilters(projects) {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const projectCards = document.querySelectorAll('.project-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all buttons
+          filterBtns.forEach(b => b.classList.remove('active'));
+          // Add active class to clicked button
+          btn.classList.add('active');
+
+          const filter = btn.getAttribute('data-filter');
+
+          projectCards.forEach(card => {
+            if (filter === 'all') {
+              card.style.display = 'block';
+            } else if (filter === 'featured') {
+              card.style.display = card.getAttribute('data-featured') === 'true' ? 'block' : 'none';
+            } else {
+              card.style.display = card.getAttribute('data-status') === filter ? 'block' : 'none';
+            }
+          });
+        });
+      });
+    }
+
+    function setupStaticProjectFilters() {
+      setupProjectFilters(); // Use the same filter logic for static projects
+    }
+
+    // Load projects when page loads
+    document.addEventListener('DOMContentLoaded', loadAndDisplayProjects);
+  </script>
+
+  <script src="/js/main.js"></script>
+
+  <footer style="background-color: #222; color: #fff; text-align: center; padding: 15px 0;">
+    © 2025 Monikha K. All Rights Reserved.
+  </footer>
+
+</body>
+</html>
