@@ -213,7 +213,9 @@
     // Load projects when page loads
     document.addEventListener('DOMContentLoaded', loadAndDisplayProjects);
   </script>
-
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="YSuwP0g6cOs478sXVOia6";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
   <script src="/js/main.js"></script>
 
   <footer style="background-color: #222; color: #fff; text-align: center; padding: 15px 0;">
